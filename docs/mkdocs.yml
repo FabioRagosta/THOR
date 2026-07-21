@@ -1,1 +1,24 @@
+site_name: THOR
+site_description: Transient Hunter for Optimised Ranking
+site_author: Fabio Ragosta
+repo_url: https://github.com/FabioRagosta/THOR
+repo_name: FabioRagosta/THOR
 
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quick Start: quickstart.md
+  - User Guide: user_guide.md
+  - Examples: examples.md
+  - API Reference: api.md
+  - FAQ: faq.md
