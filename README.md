@@ -55,7 +55,19 @@ The framework is designed to support the rapid identification of transient event
 
  Ranked Candidate List
 ```
+## Documentation
 
+The complete documentation is available at
+
+**https://fabioragosta.github.io/THOR/**
+
+It includes:
+
+- Installation guide
+- Quick start tutorial
+- User guide
+- API reference
+- Examples
 ---
 
 # Installation
