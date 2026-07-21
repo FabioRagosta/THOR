@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-lasair_token_ztf="c4b1759b3b73aa87c5cdfdc61db746be574d53fa"
-lasair_token_lsst="68bf2dd0539909b916270219dd487d056b666725"
+lasair_token_ztf="your token for ztf query"
+lasair_token_lsst="your token for lsst query"
 
 @dataclass(slots=True)
 class BrokerConfig:
