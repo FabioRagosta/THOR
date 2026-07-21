@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thor"
+version = "0.1.0"
+description = "Context-aware broker consensus framework for astronomical transient classification."
+readme = "README.md"
+requires-python = ">=3.10"
+
+authors = [
+  {name = "Fabio Ragosta"}
+]
+
+license = {text = "MIT"}
+
+keywords = [
+  "astronomy",
+  "astrophysics",
+  "transients",
+  "broker",
+  "ztf",
+  "rubin",
+  "alerce",
+  "fink",
+  "lasair"
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Astronomy",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent"
+]
+
+dependencies = [
+  "numpy",
+  "pandas",
+  "requests",
+  "astropy",
+  "alerce",
+  "lasair"
+]
+
+[tool.setuptools]
+packages = ["thor"]
