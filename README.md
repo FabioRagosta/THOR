@@ -59,7 +59,7 @@ The framework is designed to support the rapid identification of transient event
 
 The complete documentation is available at
 
-**https://fabioragosta.github.io/THOR/**
+** http://127.0.0.1:8000/THOR/**
 
 It includes:
 
