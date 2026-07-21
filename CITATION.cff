@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+
+title: THOR
+
+message: >
+  If you use THOR in your research, please cite this software.
+  Once the accompanying paper is published, please cite both the software
+  and the associated publication.
+
+type: software
+
+authors:
+  - family-names: Ragosta
+    given-names: Fabio
+      # ORCID verrà aggiunto se lo hai
+
+repository-code: "https://github.com/FabioRagosta/THOR"
+
+url: "https://github.com/FabioRagosta/THOR"
+
+version: "0.1.0"
+
+license: BSD-3-Clause
+
+date-released: 2026-07-21
+
+keywords:
+  - astronomy
+  - astrophysics
+  - transient
+  - supernova
+  - broker
+  - fink
+  - alerce
+  - lasair
+  - ZTF
+  - Rubin
