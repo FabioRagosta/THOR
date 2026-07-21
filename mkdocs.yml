@@ -1,24 +1,38 @@
 site_name: THOR
 site_description: Transient Hunter for Optimised Ranking
 site_author: Fabio Ragosta
-repo_url: https://github.com/FabioRagosta/THOR
+site_url: https://fabioragosta.github.io/THOR/
+
 repo_name: FabioRagosta/THOR
+repo_url: https://github.com/FabioRagosta/THOR
 
 theme:
   name: material
+  language: en
+
+  palette:
+    scheme: default
+    primary: indigo
+    accent: blue
+    
   features:
     - navigation.tabs
     - navigation.sections
     - navigation.top
+    - navigation.expand
     - search.highlight
     - search.suggest
     - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.highlight
+  - pymdownx.superfences
 
 nav:
   - Home: index.md
   - Installation: installation.md
   - Quick Start: quickstart.md
   - User Guide: user_guide.md
-  - Examples: examples.md
   - API Reference: api.md
-  - FAQ: faq.md

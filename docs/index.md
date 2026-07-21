@@ -1,6 +1,6 @@
 # THOR
 
-## Transient Hunter for Optimised Ranking
+## Transient Hunter ORchestrator
 
 THOR is an open-source Python framework for the contextual classification and ranking of astronomical transient alerts.
 
@@ -103,4 +103,4 @@ Citation information is available through GitHub using the **"Cite this reposito
 
 ## Licence
 
-THOR is distributed under the BSD 3-Clause License.
+THOR is distributed under the MIT License.
