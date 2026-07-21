@@ -70,7 +70,7 @@ cd thor
 Install the required dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -e .
 ```
 
 (Installation via `pip` will be available in a future release.)
