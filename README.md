@@ -118,7 +118,7 @@ The complete methodology is described in the accompanying publication.
 
 The complete documentation is available at
 
-[](https://fabioragosta.github.io/THOR/)
+[THOR](https://fabioragosta.github.io/THOR/)
 
 It includes:
 
