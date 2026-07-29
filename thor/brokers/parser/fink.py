@@ -8,6 +8,14 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from thor.utils import (
+    get_object_id, 
+    get_ra, 
+    get_dec,
+    get_mjd, 
+    get_filter, 
+    get_snr
+)
 from thor.model import (
     BrokerInfo,
     Candidate,
@@ -81,10 +89,9 @@ class FinkParser(BaseParser):
         # ------------------------------------------------------------------
         # Informazioni broker
         # ------------------------------------------------------------------
-    
         broker = BrokerInfo(
             broker="Fink",
-            object_id=raw.get("i:objectId", ""),
+            object_id=get_object_id(raw),
             raw=raw,
         )
     
@@ -93,20 +100,20 @@ class FinkParser(BaseParser):
         # ------------------------------------------------------------------
         # Coordinate
         # ------------------------------------------------------------------
-    
-        candidate.coordinates.ra = safe_float(raw.get("i:ra"))
-        candidate.coordinates.dec = safe_float(raw.get("i:dec"))
+        
+        candidate.coordinates.ra = get_ra(raw)
+        candidate.coordinates.dec = get_dec(raw)
     
         # ------------------------------------------------------------------
         # Detection
         # ------------------------------------------------------------------
     
         candidate.add_detection(
-            mjd=safe_float(raw.get("i:jd")),
-            mag=safe_float(raw.get("i:magpsf")),
-            magerr=safe_float(raw.get("i:sigmapsf")),
-            filt=str(raw.get("i:fid", "")),
-            snr=safe_float(raw.get("i:snr")),
+            mjd=safe_float(get_mjd(raw)),
+            mag=None,
+            magerr=None,
+            filt=get_filter(raw),
+            snr=None,
         )
     
         # ------------------------------------------------------------------

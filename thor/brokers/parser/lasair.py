@@ -7,7 +7,14 @@ Lasair parser.
 from __future__ import annotations
 
 from collections.abc import Iterable
-
+from thor.utils import (
+    get_object_id, 
+    get_ra, 
+    get_dec,
+    get_mjd, 
+    get_filter, 
+    get_snr
+)
 from thor.model import (
     Candidate,
     BrokerInfo,
@@ -41,8 +48,8 @@ class LasairParser(BaseParser):
     
         candidate = Candidate(
             coordinates=Coordinates(
-                ra=safe_float(object_data.get("ramean")),
-                dec=safe_float(object_data.get("decmean")),
+                ra=safe_float(get_ra(raw)),
+                dec=safe_float(get_ra(raw)),
             ),
             broker_info=[],
         )
@@ -80,7 +87,7 @@ class LasairParser(BaseParser):
         candidate.add_broker(
             BrokerInfo(
                 broker="Lasair",
-                object_id=raw.get("objectId", ""),
+                object_id= get_object_id(raw),
                 raw=raw,
             )
         )
@@ -92,16 +99,16 @@ class LasairParser(BaseParser):
     
             det = detections[-1]
     
-            filt = FILTER_MAP.get(det.get("fid"), "?")
+            filt = FILTER_MAP.get(get_filter(det), "?")
     
-            jd = safe_float(det.get("jd"))
+            mjd = safe_float(get_mjd(dat))
     
             if jd is not None:
     
                 candidate.add_detection(
-                    mjd=jd - 2400000.5,
-                    mag=safe_float(det.get("magpsf")),
-                    magerr=safe_float(det.get("sigmapsf")),
+                    mjd=mjd,
+                    mag=None,
+                    magerr=None,
                     filt=filt,
                     snr=None,
                 )

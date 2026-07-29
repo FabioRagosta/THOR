@@ -92,7 +92,7 @@ class Hunter:
             Broker name.
         """
 
-        self._broker = self.manager.load(broker)
+        self._broker = self.manager.load(broker, survey=self.survey)
         self._broker.survey = self.survey
 
         return self._broker

@@ -16,6 +16,7 @@ from .parser.fink import FinkParser
 
 from .registry import register
 
+
 @register
 class FinkBroker(BaseBroker):
     """
@@ -51,13 +52,30 @@ class FinkBroker(BaseBroker):
     supports_ztf = True
     
     supports_lsst = True
+    CLASSIFIER_MAP = {
+                    "ztf": {
+                        "SN": "SN",
+                        "TDE": "TDE",
+                    },
+                    "lsst": {
+                        "SN": "most_likely_sn",
+                        # "TDE": ??? (quando sarà disponibile)
+                    },
+                }
 
     def search(
         self,
+        classifier: str | None = None,
         **kwargs,
     ) -> List[Candidate]:
+        
+        if classifier is not None:
+            classifier = (
+                self.CLASSIFIER_MAP.get(self.survey, {}).get(classifier, classifier)
+            )
 
-        data = self.client.latest(**kwargs)
+    
+        data = self.client.latest(classifier=classifier, **kwargs)
 
         return self.parser.parse(data)
 

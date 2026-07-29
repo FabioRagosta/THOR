@@ -65,11 +65,15 @@ class AlerceREST:
 
     def search(
         self,
+        survey,
+        classifier,
         **kwargs,
     ):
     
         return self.client.query_objects(
-            survey=self._survey,
+            survey=survey,
+            classifier='lc_classifier_transient',
+            target_class=classifier,
             format="json",
             **kwargs,
         )

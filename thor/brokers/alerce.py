@@ -85,10 +85,14 @@ class AlerceBroker(BaseBroker):
 
     def search(
                 self,
+                survey=None,
                 classifier=None,
                 n=100,
                 **kwargs,
         ):
+        
+        if survey is None:
+            survey = self._survey
         if classifier in self.CLASSIFIER_MAP:
 
             kwargs.update(
@@ -97,7 +101,7 @@ class AlerceBroker(BaseBroker):
 
         kwargs["page_size"] = n
         
-        data = self.client.search(**kwargs)
+        data = self.client.search(survey=survey, classifier=classifier, **kwargs)
     
         candidates = self.parser.parse(data)
 

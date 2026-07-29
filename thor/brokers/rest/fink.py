@@ -106,14 +106,34 @@ class FinkREST(BaseRESTClient):
                 n: int = 100,
             ):
 
-        payload = {
-        "class": classifier,
-        "n": n,
-        "output-format": "json",
-        }
+        if self.survey == "ztf":
 
+            endpoint = "/api/v1/latests"
+    
+            payload = {
+                "class": classifier,
+                "n": n,
+                "output-format": "json",
+            }
+    
+        elif self.survey == "lsst":
+    
+            endpoint = "/api/v1/tags"
+    
+            payload = {
+                "tag": classifier,
+                "n": n,
+                "output-format": "json",
+            }
+    
+        else:
+    
+            raise ValueError(
+                f"Unsupported survey: {self.survey}"
+            )
+    
         return self.post(
-            "/api/v1/latests",
+            endpoint,
             payload,
         )
 
