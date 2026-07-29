@@ -23,22 +23,24 @@ class AlerceBroker(BaseBroker):
     """
     CLASSIFIER_MAP = {
 
-                    "SN candidate": {
-                         "classifier":"lc_classifier",
-                         "class_name":"SNII",
-                    },
-                
-                    "AGN": {
-                         "classifier":"lc_classifier",
-                         "class_name":"AGN",
-                    },
-                
-                    "LPV": {
-                        "classifier": "lc_classifier",
-                        "class_name": "LPV",
-                    },
-                
-                }
+                        "SN": {
+                            "class_name": [
+                                            "SNIa",
+                                            "SNII",
+                                            "SNIbc",
+                                            "SLSN"
+                                        ],
+                        },
+                    
+                        "AGN": {
+                            "class_name": "AGN",
+                        },
+                    
+                        "LPV": {
+                            "class_name": "LPV",
+                        },
+                    
+                    }
     name = "ALeRCE"
 
     supports_ztf = True
@@ -87,7 +89,7 @@ class AlerceBroker(BaseBroker):
                 self,
                 survey=None,
                 classifier=None,
-                n=100,
+                limit=100,
                 **kwargs,
         ):
         
@@ -99,7 +101,7 @@ class AlerceBroker(BaseBroker):
                 self.CLASSIFIER_MAP[classifier]
             )
 
-        kwargs["page_size"] = n
+        kwargs["page_size"] = limit
         
         data = self.client.search(survey=survey, classifier=classifier, **kwargs)
     

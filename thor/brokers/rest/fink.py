@@ -103,7 +103,7 @@ class FinkREST(BaseRESTClient):
     def latest(
                 self,
                 classifier: str,
-                n: int = 100,
+                limit: int = 100,
             ):
 
         if self.survey == "ztf":
@@ -112,7 +112,7 @@ class FinkREST(BaseRESTClient):
     
             payload = {
                 "class": classifier,
-                "n": n,
+                "n": limit,
                 "output-format": "json",
             }
     
@@ -122,7 +122,7 @@ class FinkREST(BaseRESTClient):
     
             payload = {
                 "tag": classifier,
-                "n": n,
+                "n": limit,
                 "output-format": "json",
             }
     

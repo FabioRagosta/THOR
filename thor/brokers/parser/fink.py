@@ -128,7 +128,6 @@ class FinkParser(BaseParser):
     
             "d:rf_kn_vs_nonkn": "Kilonova",
     
-            "d:rf_snia_vs_nonia": "RF_SNIa",
     
             "d:slsn_score": "SLSN",
     
@@ -145,7 +144,7 @@ class FinkParser(BaseParser):
             if value < 0:
                 continue
     
-            classification.probabilities[cls] = value
+            classification.probabilities[cls] = 1 - value
     
         # ------------------------------------------------------------------
         # Confidence

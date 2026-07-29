@@ -73,7 +73,6 @@ class AlerceREST:
         return self.client.query_objects(
             survey=survey,
             classifier='lc_classifier_transient',
-            target_class=classifier,
             format="json",
             **kwargs,
         )

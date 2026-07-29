@@ -297,7 +297,37 @@ class Candidate:
     def score(self) -> float:
     
         return self.ranking.total
+    
+    def __repr__(self):
 
+        object_id = (
+            self.broker_info[0].object_id
+            if self.broker_info else
+            "Unknown"
+        )
+    
+        brokers = ", ".join(
+            b.broker for b in self.broker_info
+        )
+    
+        if self.classification is not None:
+            cls = self.classification.best_class or "Unknown"
+            prob = self.classification.best_probability
+    
+            if prob is not None:
+                cls = f"{cls} ({prob:.2%})"
+        else:
+            cls = "Unknown"
+    
+        return (
+            f"Candidate("
+            f"object='{object_id}', "
+            f"class='{cls}', "
+            f"RA={self.coordinates.ra:.5f}, "
+            f"Dec={self.coordinates.dec:.5f}, "
+            f"brokers=[{brokers}]"
+            f")"
+        )
 # ============================================================
 # Search Result
 # ============================================================
