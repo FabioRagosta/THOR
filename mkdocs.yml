@@ -34,5 +34,10 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Quick Start: quickstart.md
+  - Tutorials:
+      - Tutorial 1: tutorials/01_thor_data_model_and_pipeline.ipynb
+      - Tutorial 2: tutorials/02_thor_broker_workflow.ipynb
+      - Tutorial 3: tutorials/03_thor_search_all_fusion.ipynb
   - User Guide: user_guide.md
   - API Reference: api.md
+  
