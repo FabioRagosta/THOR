@@ -126,7 +126,7 @@ It includes:
 - Quick start tutorial
 - User guide
 - API reference
-- Examples
+- Tutorials
 ---
 
 # Citation
