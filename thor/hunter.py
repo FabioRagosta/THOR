@@ -179,7 +179,7 @@ class Hunter:
             **kwargs,
         )
         
-        candidates = self.fusion(candidates)
+        candidates = self.fusion.run(candidates)
         
         return [
             self.process(candidate)
@@ -187,7 +187,94 @@ class Hunter:
         ]
 
     # ---------------------------------------------------------
-
+    def search_all(
+        self,
+        brokers: list[str],
+        mode: str = "search",
+        ra: Optional[float] = None,
+        dec: Optional[float] = None,
+        radius_arcsec: Optional[float] = None,
+        broker_kwargs: Optional[dict[str, dict]] = None,
+        **kwargs,
+    ) -> list[Candidate]:
+ 
+        """
+        Query several brokers and fuse the results into a single,
+        weighted list of candidates.
+ 
+        Unlike `search`/`cone_search`, which only use the broker
+        loaded via `load()`, this queries every broker in `brokers`
+        and merges the resulting candidates through `FusionService`
+        *before* running the rest of the pipeline, so that objects
+        seen by more than one broker are actually cross-matched and
+        classified with the broker weights.
+ 
+        Parameters
+        ----------
+        brokers : list[str]
+            Broker names to query (e.g. ["fink", "lasair", "alerce"]).
+        mode : str
+            Either "search" or "cone_search".
+        ra, dec, radius_arcsec : float
+            Required when mode="cone_search".
+        broker_kwargs : dict[str, dict], optional
+            Per-broker keyword arguments, keyed by broker name.
+            Merged on top of the shared `**kwargs`.
+        **kwargs
+            Keyword arguments shared by every broker call.
+        """
+ 
+        if mode not in ("search", "cone_search"):
+ 
+            raise ValueError(
+                "mode must be 'search' or 'cone_search'."
+            )
+ 
+        if mode == "cone_search" and (
+            ra is None or dec is None or radius_arcsec is None
+        ):
+ 
+            raise ValueError(
+                "ra, dec and radius_arcsec are required "
+                "when mode='cone_search'."
+            )
+ 
+        broker_kwargs = broker_kwargs or {}
+ 
+        candidates: list[Candidate] = []
+ 
+        for name in brokers:
+ 
+            broker = self.manager.load(name, survey=self.survey)
+            broker.survey = self.survey
+ 
+            call_kwargs = {
+                **kwargs,
+                **broker_kwargs.get(name, {}),
+            }
+ 
+            if mode == "search":
+ 
+                result = broker.search(**call_kwargs)
+ 
+            else:
+ 
+                result = broker.cone_search(
+                    ra=ra,
+                    dec=dec,
+                    radius_arcsec=radius_arcsec,
+                    **call_kwargs,
+                )
+ 
+            candidates.extend(result)
+ 
+        candidates = self.fusion.run(candidates)
+ 
+        return [
+            self.process(candidate)
+            for candidate in candidates
+        ]
+        
     def get(
         self,
         object_id: str,

@@ -49,7 +49,7 @@ class LasairParser(BaseParser):
         candidate = Candidate(
             coordinates=Coordinates(
                 ra=safe_float(get_ra(raw)),
-                dec=safe_float(get_ra(raw)),
+                dec=safe_float(get_dec(raw)),
             ),
             broker_info=[],
         )
@@ -64,6 +64,8 @@ class LasairParser(BaseParser):
         #
         # Sherlock contextual classification
         #
+        sherlock = raw.get("sherlock")
+
         if sherlock:
     
             label = sherlock.get("classification")
@@ -76,13 +78,17 @@ class LasairParser(BaseParser):
     
                 candidate.classification.classifier = "Sherlock"
     
-                candidate.classification.confidence = float(
-                    sherlock.get("classificationReliability", 1.0)
+                candidate.classification.confidence = safe_float(
+                    sherlock.get(
+                        "classificationReliability",
+                        1.0
+                    )
                 )
     
                 candidate.classification.source = "Lasair"
     
                 candidate.classification.calibrated = False
+
     
         candidate.add_broker(
             BrokerInfo(
@@ -101,7 +107,7 @@ class LasairParser(BaseParser):
     
             filt = FILTER_MAP.get(get_filter(det), "?")
     
-            mjd = safe_float(get_mjd(dat))
+            mjd = safe_float(get_mjd(det))
     
             if jd is not None:
     
@@ -117,7 +123,7 @@ class LasairParser(BaseParser):
         # Store full response
         #
         candidate.metadata.update(raw)
-    
+        
         return candidate
 
     # ---------------------------------------------------------

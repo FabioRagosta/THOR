@@ -120,32 +120,43 @@ class FinkParser(BaseParser):
         # Vere probabilità scientifiche prodotte da Fink
         # ------------------------------------------------------------------
     
-        mapping = {
-    
-            "d:snn_sn_vs_all": "SN",
-    
-            "d:snn_snia_vs_nonia": "SNIa",
-    
-            "d:rf_kn_vs_nonkn": "Kilonova",
-    
-    
-            "d:slsn_score": "SLSN",
-    
-        }
-    
-        for key, cls in mapping.items():
-    
-            value = safe_float(raw.get(key))
-    
-            if value is None:
-                continue
-    
-            # Fink usa -1 quando il classificatore non è disponibile
-            if value < 0:
-                continue
-    
-            classification.probabilities[cls] = 1 - value
-    
+        if "d:snn_sn_vs_all" in raw:
+            # ==========================
+            # ZTF
+            # ==========================
+        
+            mapping = {
+                "d:snn_sn_vs_all": "SN",
+                "d:snn_snia_vs_nonia": "SNIa",
+                "d:rf_kn_vs_nonkn": "Kilonova",
+                "d:slsn_score": "SLSN",
+            }
+        
+            for key, cls in mapping.items():
+        
+                value = safe_float(raw.get(key))
+        
+                if value is None or value < 0:
+                    continue
+        
+                classification.probabilities[cls] = value
+        
+        elif "f:clf_snnSnVsOthers_score" in raw:
+            # ==========================
+            # Rubin / LSST
+            # ==========================
+        
+            score = safe_float(raw.get("f:clf_snnSnVsOthers_score"))
+        
+            if score is not None and score >= 0:
+        
+                classification.probabilities["SN"] = score
+                classification.probabilities["Other"] = 1.0 - score
+        
+            # Salva anche il risultato del classificatore CATS
+            classification.metadata["cats_class"] = raw.get("f:clf_cats_class")
+            classification.metadata["cats_score"] = raw.get("f:clf_cats_score")
+        
         # ------------------------------------------------------------------
         # Confidence
         # ------------------------------------------------------------------
