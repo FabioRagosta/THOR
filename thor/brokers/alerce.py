@@ -134,18 +134,26 @@ class AlerceBroker(BaseBroker):
     # ---------------------------------------------------------
 
     def get_object(
-        self,
-        object_id: str,
-    ) -> Optional[Candidate]:
-
-        data = self.client.get_object(object_id)
-
-        candidates = self.parser.parse(data)
-
-        if not candidates:
-            return None
-
-        return candidates[0]
+            self,
+            object_id: str,
+        ) -> Optional[Candidate]:
+        
+            data = self.client.get_object(object_id)
+        
+            candidates = self.parser.parse(data)
+        
+            if not candidates:
+                return None
+        
+            candidate = candidates[0]
+        
+            # Retrieve ALeRCE classification probabilities
+            classification = self.classifications(object_id)
+        
+            candidate.classification = classification
+            candidate.broker_classifications["ALeRCE"] = classification
+        
+            return candidate
 
     # ---------------------------------------------------------
 

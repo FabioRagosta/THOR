@@ -48,8 +48,8 @@ class LasairParser(BaseParser):
     
         candidate = Candidate(
             coordinates=Coordinates(
-                ra=safe_float(get_ra(raw)),
-                dec=safe_float(get_dec(raw)),
+                ra=safe_float(object_data.get("ramean")),
+                dec=safe_float(object_data.get("decmean")),
             ),
             broker_info=[],
         )
@@ -93,7 +93,7 @@ class LasairParser(BaseParser):
         candidate.add_broker(
             BrokerInfo(
                 broker="Lasair",
-                object_id= get_object_id(raw),
+                object_id= raw.get("objectId"),
                 raw=raw,
             )
         )
@@ -109,7 +109,7 @@ class LasairParser(BaseParser):
     
             mjd = safe_float(get_mjd(det))
     
-            if jd is not None:
+            if mjd is not None:
     
                 candidate.add_detection(
                     mjd=mjd,

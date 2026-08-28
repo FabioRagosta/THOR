@@ -14,10 +14,12 @@ theme:
     scheme: default
     primary: indigo
     accent: blue
-    
+
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.expand
+    - navigation.indexes
     - navigation.top
     - navigation.expand
     - search.highlight
@@ -30,11 +32,15 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
 
+plugins:
+  - search
+  - mkdocs-jupyter
 nav:
   - Home: index.md
   - Installation: installation.md
   - Quick Start: quickstart.md
   - Tutorials:
+      - Tutorials/index.md
       - Tutorial 1: Tutorials/01_thor_data_model_and_pipeline.ipynb
       - Tutorial 2: Tutorials/02_thor_broker_workflow.ipynb
       - Tutorial 3: Tutorials/03_thor_search_all_fusion.ipynb

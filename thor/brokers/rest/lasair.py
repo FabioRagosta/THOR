@@ -40,13 +40,14 @@ class LasairREST(BaseRESTClient):
             headers["Authorization"] = f"Token {token}"
         
         super().__init__(
-            base_url="https://lasair-ztf.lsst.ac.uk",
+            base_url=self.BASE_URLS[survey.lower()],
             timeout=timeout,
             retries=retries,
             headers=headers,
         )
         
         self.survey = survey
+        
     @property
     def survey(self):
         return self._survey
@@ -58,16 +59,23 @@ class LasairREST(BaseRESTClient):
         self._survey = value.lower()
     
         if self._survey == "ztf":
-
+    
             self.api = lasair_client(
                 token=self.token_ztf,
+                endpoint="https://lasair-ztf.lsst.ac.uk/api",
             )
-        
-        else:
-        
+    
+        elif self._survey == "lsst":
+    
             self.api = lasair_client(
                 token=self.token_lsst,
                 endpoint="https://lasair.lsst.ac.uk/api",
+            )
+    
+        else:
+    
+            raise ValueError(
+                f"Unsupported Lasair survey: {value}"
             )
 
     # ---------------------------------------------------------

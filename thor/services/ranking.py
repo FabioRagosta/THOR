@@ -12,13 +12,18 @@ Current components
 - Lightcurve quality
 - Temporal information
 - Host information (placeholder)
-- Broker agreement (placeholder)
+- Broker agreement: mean pairwise cosine similarity between the
+  probability distributions of every broker that classified the
+  candidate (neutral 0.5 when fewer than two brokers reported)
 - Rarity (placeholder)
 
 Every partial score is normalized in [0,1].
 """
 
 from __future__ import annotations
+
+import math
+from itertools import combinations
 
 from thor.model import Candidate
 
@@ -179,13 +184,66 @@ class RankingService(BaseService):
     ) -> float:
 
         #
-        # Placeholder.
+        # Compares the classifications coming from every broker
+        # that reported one, using the mean pairwise cosine
+        # similarity between their probability distributions.
         #
-        # In the future this method will compare
-        # classifications coming from multiple brokers.
+        # Cosine similarity is used (rather than a strict
+        # best-class match) because it degrades gracefully: two
+        # brokers that both split their probability mass between
+        # the same couple of classes still score as "agreeing"
+        # even if their top class differs by a hair.
+        #
+        # With 0 or 1 broker there is nothing to compare, so we
+        # fall back to the previous neutral placeholder value.
         #
 
-        return 0.5
+        classifications = [
+            c for c in candidate.broker_classifications.values()
+            if c.probabilities
+        ]
+
+        if len(classifications) < 2:
+
+            return 0.5
+
+        similarities = [
+            self._cosine_similarity(
+                c1.probabilities,
+                c2.probabilities,
+            )
+            for c1, c2 in combinations(classifications, 2)
+        ]
+
+        return max(
+            0.0,
+            min(1.0, sum(similarities) / len(similarities)),
+        )
+
+    # ---------------------------------------------------------
+
+    @staticmethod
+    def _cosine_similarity(
+        a: dict[str, float],
+        b: dict[str, float],
+    ) -> float:
+
+        classes = set(a) | set(b)
+
+        dot = sum(
+            a.get(cls, 0.0) * b.get(cls, 0.0)
+            for cls in classes
+        )
+
+        norm_a = math.sqrt(sum(v * v for v in a.values()))
+
+        norm_b = math.sqrt(sum(v * v for v in b.values()))
+
+        if norm_a == 0.0 or norm_b == 0.0:
+
+            return 0.0
+
+        return dot / (norm_a * norm_b)
 
     # ---------------------------------------------------------
 
